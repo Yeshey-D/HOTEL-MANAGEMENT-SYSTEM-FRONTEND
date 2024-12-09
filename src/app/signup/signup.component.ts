@@ -5,6 +5,7 @@ import { SignupModel } from '../models/signup.model';
 import { SignupService } from '../services/signup.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
 selector: 'app-signup',
@@ -21,7 +22,9 @@ errorMessage = '';
 constructor(
     private formBuilder: FormBuilder,
     private signupService: SignupService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
+
   ) {
     this.signupForm = this.formBuilder.group({
       name: ['', [
@@ -78,13 +81,14 @@ constructor(
       phone: this.signupForm.value.phone
     };
     
+    
     this.signupService.signup(signupData).subscribe({
-      next: (response) => {
+      next: (data) => {
+        this.toastr.success('Signup successful', 'Success');
         this.router.navigate(['/login']);
       },
-      error: (error) => {
-        this.errorMessage = error.message || 'Signup failed';
-        console.error('Signup error', error);
+      error: (data) => {
+        this.toastr.error(data.error?.message || 'Signup failed', 'Error');
       }
     });
   }
