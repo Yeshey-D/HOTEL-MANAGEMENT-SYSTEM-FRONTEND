@@ -1,47 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <title>Hotel-Management-System</title>
-</head>
-<body>
-    <div class="dashboard-container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-          <div class="sidebar-header">
-            <h3>Hotel Management</h3>
-          </div>
-          <nav class="sidebar-nav">
-            <ul>
-              <li><a href="#"><i class="fas fa-chart-bar"></i>Rooms</a></li>
-              <li><a href="#"><i class="fas fa-chart-bar"></i>Reservations</a></li>
-              <li><a href="#"><i class="fas fa-cog"></i> Log Out</a></li>
-            </ul>
-          </nav>
-        </div>
+<div class="flex flex-col h-screen">
+  <app-navbar class="z-10"></app-navbar>
+  <app-sidebar class="z-10"></app-sidebar>
+    <main class="flex-1 p-6 ml-64 overflow-y-auto">
       
-        <!-- Main Content -->
-        <div class="main-content">
-          <!-- Top Navigation Bar -->
-          
-          <header class="top-nav">
-            <div class="search-bar">
-              <input type="text" placeholder="Search...">
-            </div>
-            <div class="user-profile">
-              <span>Admin User</span>
-              <img src="assets/hotel.webp" alt="Profile" class="avatar">
-            </div>
-          </header>
-      
-          <!-- Content Area -->
-          <main class="content">
-         
-          </main>
-        </div>
-      </div>
-    
-</body>
-</html>
+    </main>
+</div>

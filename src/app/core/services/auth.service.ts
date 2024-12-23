@@ -1,9 +1,11 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { LoginModel, LoginResponseModel } from '../models/login.model';
-import { ApiService } from '../api.service';
-import { isPlatformBrowser } from '@angular/common';
+import { ApiService } from '../../api.service';
+import { User } from '../models/user.model';
+import { UserService } from './user.service';
+import { catchError, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,53 +16,34 @@ export class AuthService {
 
   constructor(
     private apiService: ApiService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    private userService: UserService
   ) {}
-
-  // Check if in the browser before accessing localStorage
-  private isBrowser(): boolean {
-    return isPlatformBrowser(this.platformId);
-  }
 
   // Store tokens
   setToken(token: string): void {
-    if (this.isBrowser()) {
-      localStorage.setItem(this.TOKEN_KEY, token);
-    }
+    localStorage.setItem(this.TOKEN_KEY, token);
   }
 
   setRefreshToken(token: string): void {
-    if (this.isBrowser()) {
-      localStorage.setItem(this.REFRESH_TOKEN_KEY, token);
-    }
+    localStorage.setItem(this.REFRESH_TOKEN_KEY, token);
   }
 
   // Get tokens
   getToken(): string | null {
-    if (this.isBrowser()) {
-      return localStorage.getItem(this.TOKEN_KEY);
-    }
-    return null;
+    return localStorage.getItem(this.TOKEN_KEY);
   }
 
   getRefreshToken(): string | null {
-    if (this.isBrowser()) {
-      return localStorage.getItem(this.REFRESH_TOKEN_KEY);
-    }
-    return null;
+    return localStorage.getItem(this.REFRESH_TOKEN_KEY);
   }
 
   // Remove tokens
   removeToken(): void {
-    if (this.isBrowser()) {
-      localStorage.removeItem(this.TOKEN_KEY);
-    }
+    localStorage.removeItem(this.TOKEN_KEY);
   }
 
   removeRefreshToken(): void {
-    if (this.isBrowser()) {
-      localStorage.removeItem(this.REFRESH_TOKEN_KEY);
-    }
+    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
   }
 
   // Validate token by calling a protected endpoint
@@ -94,14 +77,29 @@ export class AuthService {
     );
   }
 
-  // Logout method
-  logout(): Observable<any> {
-    return this.apiService.post('/auth/logout', {}).pipe(
-      map(() => {
-        this.removeToken();
-        this.removeRefreshToken();
+  getCurrentUser(): Observable<User> {
+    return this.apiService.get<User>('/users/self').pipe(
+      map((response: any) => {
+        // Create a new User object from the API response
+        const user: User = {
+          id: response?.data?.user.id,
+          // Map other properties from the response
+          email: response?.data?.user.email,
+          name:"Admin"
+          // Add any additional mapping as needed
+        };
+
+        this.userService.setCurrentUser(user);
+        return user;
       })
     );
+  }
+
+  // Logout method
+  logout(): void {
+    this.removeToken();
+    this.removeRefreshToken();
+    localStorage.clear();
   }
 
   // Refresh token method
