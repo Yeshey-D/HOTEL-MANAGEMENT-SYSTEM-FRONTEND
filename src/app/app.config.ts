@@ -6,7 +6,8 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 import { provideToastr } from 'ngx-toastr';
-import { authInterceptor } from './interceptor/auth.interceptor';
+import { authInterceptor } from './core/interceptor/auth.interceptor';
+
 
 
 export const appConfig: ApplicationConfig = {

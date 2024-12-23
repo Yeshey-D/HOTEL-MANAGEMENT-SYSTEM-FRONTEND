@@ -1,0 +1,17 @@
+<nav class="bg-white shadow-md">
+    <div class="container pl-40 py-3 flex justify-between items-center">
+
+      <div class="ml-20 pl-10">
+        <div class="text-[#0d1b2a] text-xl font-semibold font-['Inter']">Welcome Back, Admin!</div>
+        <div class="text-[#415a77] text-base font-medium font-['Inter'] leading-normal"></div>
+      </div>
+      
+      <div class="flex items-center space-x-4">
+        
+        <app-profile-dropdown
+          [user]="currentUser$ | async"
+          
+        ></app-profile-dropdown>
+      </div>
+    </div>
+  </nav>

@@ -1,0 +1,16 @@
+<div class="relative" #dropdownContainer>
+  <button
+    (click)="toggleDropdown()"
+    class="flex flex-col items-center focus:outline-none"
+  >
+    <div
+      class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center relative"
+    >
+      <img
+        [src]="user?.avatar || 'assets/icon-profile.png'"
+        alt="Profile"
+        class="w-8 h-8 rounded-full object-cover"
+      />
+    </div>
+  </button>
+</div>
