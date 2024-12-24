@@ -1,0 +1,83 @@
+<div class="flex flex-col h-screen">
+  <app-navbar class="z-10"></app-navbar>
+  <app-sidebar class="z-10"> </app-sidebar>
+
+  <div
+    class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
+  >
+    <div class="max-w-md w-full">
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+        <!-- Card Header -->
+        <div class="px-6 py-4 bg-indigo-600">
+          <h2 class="text-xl font-bold text-white text-center">
+            Enter Room Details
+          </h2>
+        </div>
+
+        <!-- Form Content -->
+        <div class="p-6">
+          <form
+            class="space-y-6"
+            [formGroup]="roomDetailsForm"
+            (ngSubmit)="submitform()"
+          >
+            <div class="form-item">
+              <label
+                for="roomName"
+                class="block text-sm font-medium text-gray-700"
+                >Room Name</label
+              >
+              <input
+                id="roomName"
+                formControlName="name"
+                type="text"
+                placeholder="Room Name"
+                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+
+            <div class="form-item">
+              <label
+                for="roomType"
+                class="block text-sm font-medium text-gray-700"
+                >Room Type</label
+              >
+              <input
+                id="roomType"
+                formControlName="type"
+                type="text"
+                placeholder="Room Type"
+                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+
+            <div class="form-item">
+              <label
+                for="roomPrice"
+                class="block text-sm font-medium text-gray-700"
+                >Room Price</label
+              >
+              <input
+                id="roomPrice"
+                formControlName="price"
+                type="text"
+                placeholder="Room Price"
+                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+
+            <div class="form-item">
+              <button
+                type="submit"
+                (click)="submitform()"
+                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

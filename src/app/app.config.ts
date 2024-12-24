@@ -7,6 +7,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
 import { provideToastr } from 'ngx-toastr';
 import { authInterceptor } from './core/interceptor/auth.interceptor';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 
 
@@ -23,6 +24,6 @@ export const appConfig: ApplicationConfig = {
       preventDuplicates: true,
       progressBar: true,
       closeButton: true
-    })
+    }), provideAnimationsAsync(), provideAnimationsAsync()
   ]
 };

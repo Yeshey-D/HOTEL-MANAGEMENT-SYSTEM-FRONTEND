@@ -1,0 +1,53 @@
+<div class="min-h-screen bg-gray-50 p-6">
+    <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+      <!-- Header -->
+      <div class="p-4 bg-indigo-600 flex justify-between items-center">
+        <h2 class="text-lg font-bold text-white">Room List</h2>
+        <button
+          class="px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-700 focus:outline-none"
+
+        >
+          Add Room
+        </button>
+      </div>
+  
+      <!-- Table -->
+      <div class="p-4">
+        <table class="min-w-full border-collapse border border-gray-300 text-left">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="border border-gray-300 px-4 py-2">ID</th>
+              <th class="border border-gray-300 px-4 py-2">Name</th>
+              <th class="border border-gray-300 px-4 py-2">Type</th>
+              <th class="border border-gray-300 px-4 py-2">Price</th>
+              <th class="border border-gray-300 px-4 py-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let room of rooms"
+              class="hover:bg-gray-50 transition duration-150"
+            >
+              <td class="border border-gray-300 px-4 py-2">{{ room.id }}</td>
+              <td class="border border-gray-300 px-4 py-2">{{ room.name }}</td>
+              <td class="border border-gray-300 px-4 py-2">{{ room.type }}</td>
+              <td class="border border-gray-300 px-4 py-2">{{ room.price }}</td>
+              <td class="border border-gray-300 px-4 py-2">
+                <button
+                  class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none mr-2"
+                >
+                  Edit
+                </button>
+                <button
+                  class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-700 focus:outline-none"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  

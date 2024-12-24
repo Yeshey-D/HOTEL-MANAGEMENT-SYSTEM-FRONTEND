@@ -8,13 +8,19 @@
     <span class="text-lg font-bold">Hotel Management System</span>
   </div>
   
-  <button 
-    class="w-full bg-blue-500 text-white py-2 rounded mb-6 hover:bg-blue-600 transition">
-    + Add Room
-  </button>
+
   
   <div>
     <ul>
+      <li routerLink="/dashboard/dashboard-content" class="bg-white p-3 mb-2 rounded flex items-center space-x-2 hover:bg-gray-200 cursor-pointer">
+        <span>Dashboard</span>
+      </li>
+      <li routerLink="/dashboard/view-room" class="bg-white p-3 mb-2 rounded flex items-center space-x-2 hover:bg-gray-200 cursor-pointer">
+        <span>View</span>
+      </li>
+      <li routerLink="/dashboard/add-room" class="bg-white p-3 mb-2 rounded flex items-center space-x-2 hover:bg-gray-200 cursor-pointer">
+        <span>Add</span>
+      </li>
       <li class="bg-white p-3 mb-2 rounded flex items-center space-x-2 hover:bg-gray-200 cursor-pointer">
         <span>Reservations</span>
       </li>
