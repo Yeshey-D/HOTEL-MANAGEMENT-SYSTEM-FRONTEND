@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../api.service';
 import { ToastrService } from 'ngx-toastr';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 interface Rooms {
   id: number;
@@ -15,7 +16,7 @@ interface Rooms {
 
 @Component({
   selector: 'app-view-room',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './view-room.component.html',
   styleUrl: './view-room.component.css'
 })

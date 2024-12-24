@@ -1,0 +1,64 @@
+<div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <h1 class="text-2xl font-semibold text-gray-800 mb-4">Add Room</h1>
+    <form [formGroup]="roomForm" (ngSubmit)="onSubmit()" novalidate>
+      <!-- Room Name -->
+      <div class="mb-4">
+        <label for="name" class="block text-sm font-medium text-gray-700">Room Name</label>
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          placeholder="Enter room name"
+        />
+        <div *ngIf="roomForm.get('name')?.invalid && roomForm.get('name')?.touched" class="text-red-600 text-sm">
+          Room name is required.
+        </div>
+      </div>
+  
+      <!-- Room Price -->
+      <div class="mb-4">
+        <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+        <input
+          id="price"
+          type="number"
+          formControlName="price"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          placeholder="Enter room price"
+        />
+        <div *ngIf="roomForm.get('price')?.invalid && roomForm.get('price')?.touched" class="text-red-600 text-sm">
+          Price is required.
+        </div>
+      </div>
+  
+      <!-- Room Type -->
+      <div class="mb-4">
+        <label for="type" class="block text-sm font-medium text-gray-700">Room Type</label>
+        <select
+          id="type"
+          formControlName="type"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        >
+          <option value="" disabled>Select room type</option>
+          <option value="single">Single</option>
+          <option value="double">Double</option>
+          <option value="suite">Suite</option>
+        </select>
+        <div *ngIf="roomForm.get('type')?.invalid && roomForm.get('type')?.touched" class="text-red-600 text-sm">
+          Room type is required.
+        </div>
+      </div>
+  
+      <!-- Submit Button -->
+      <div>
+        <button
+          type="submit"
+          class="w-full inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          [disabled]="roomForm.invalid"
+        >
+          Add Room
+        </button>
+      </div>
+    </form>
+  </div>
+  
