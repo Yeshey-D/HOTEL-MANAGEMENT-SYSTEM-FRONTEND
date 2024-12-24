@@ -36,10 +36,12 @@ export const routes: Routes = [
         component: AddRoomComponent,
       },
 
+      // ... existing routes ...
       {
-        path: 'edit-room',
+        path: 'edit-room/:id',
         component: EditRoomComponent,
       },
+// ... existing routes ...
     ],
   },
 ];
