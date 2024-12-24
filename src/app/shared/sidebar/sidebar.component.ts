@@ -19,9 +19,19 @@ export class SidebarComponent{
     private router: Router
   ) {}
 
+  isModalOpen = false;
+
+  openModal() {
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+  }
+  
   handleLogout(): void {
     this.authService.logout();
     this.toastr.success('Logout successful', 'Success');
     this.router.navigate(['/login']);
-  }
+  }
 }
