@@ -67,7 +67,7 @@ export class LoginComponent {
         }
 
         this.toastr.success('Login successful', 'Success');
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['']);
       },
       error: (data) => {
         this.toastr.error(data.error?.message || 'Login failed', 'Error');

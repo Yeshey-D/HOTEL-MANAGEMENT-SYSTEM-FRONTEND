@@ -99,7 +99,7 @@ export class AuthService {
   logout(): void {
     this.removeToken();
     this.removeRefreshToken();
-    localStorage.clear();
+    // localStorage.clear();
   }
 
   // Refresh token method

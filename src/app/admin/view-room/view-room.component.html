@@ -34,14 +34,18 @@
               <td class="border border-gray-300 px-4 py-2">{{ room.type }}</td>
               <td class="border border-gray-300 px-4 py-2">{{ room.price }}</td>
               <td class="border border-gray-300 px-4 py-2">
-                <button
-                  class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none mr-2"
-                >
-                  Edit
-                </button>
+                <!-- ... existing code ... -->
+              <button
+              [routerLink]="['/dashboard/edit-room', room.id]"
+              class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none mr-2"
+              >
+              Edit
+              </button>
+<!-- ... existing code ... -->
                 <button
                   class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-700 focus:outline-none"
-                >
+                  (click)="deleteRoom(room)"
+                  >
                   Delete
                 </button>
               </td>
