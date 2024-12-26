@@ -7,6 +7,8 @@ import { ViewRoomComponent } from './admin/view-room/view-room.component';
 import { AddRoomComponent } from './admin/add-room/add-room.component';
 import { EditRoomComponent } from './admin/edit-room/edit-room.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent }, // Default route
@@ -44,4 +46,6 @@ export const routes: Routes = [
 // ... existing routes ...
     ],
   },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password/:token', component: ResetPasswordComponent }
 ];
