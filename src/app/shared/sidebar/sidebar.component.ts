@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../core/services/auth.service';
+import { User } from '../../core/models/user.model';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { Dialog } from '@angular/cdk/dialog';
 
 
 @Component({
@@ -13,25 +16,25 @@ import { AuthService } from '../../core/services/auth.service';
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent{
-  constructor(
-    private authService: AuthService,
-    private toastr: ToastrService,
-    private router: Router
-  ) {}
-
-  isModalOpen = false;
-
-  openModal() {
-    this.isModalOpen = true;
-  }
-
-  closeModal() {
-    this.isModalOpen = false;
-  }
   
-  handleLogout(): void {
-    this.authService.logout();
-    this.toastr.success('Logout successful', 'Success');
-    this.router.navigate(['/login']);
+  @Output() logout = new EventEmitter<void>();
+
+  constructor(
+    private dialog: Dialog,
+  ) {}
+  
+  onLogout(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: 'Confirm Logout',
+        message: 'Are you sure you want to log out?'
+      }
+    });
+
+    dialogRef.closed.subscribe(result => {
+      if (result) {
+        this.logout.emit();
+      }
+    });
   }
 }

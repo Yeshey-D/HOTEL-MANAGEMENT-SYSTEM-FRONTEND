@@ -4,7 +4,12 @@ import { CommonModule } from '@angular/common';
 import { LoginModel } from '../core/models/login.model';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { RouterLink, RouterModule } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from '../core/services/auth.service';
 
 @Component({
@@ -12,7 +17,13 @@ import { AuthService } from '../core/services/auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   standalone: true,
-  imports: [RouterLink,RouterModule,ReactiveFormsModule, CommonModule,ToastrModule]
+  imports: [
+    RouterLink,
+    RouterModule,
+    ReactiveFormsModule,
+    CommonModule,
+    ToastrModule,
+  ],
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -25,26 +36,28 @@ export class LoginComponent {
     private authService: AuthService,
     private toastr: ToastrService
   ) {
-    this.loginForm = this.formBuilder.group({
-      email: ['', [
-        Validators.required, 
-        Validators.email
-      ]],
-      password: ['', [
-        Validators.required,
-        Validators.minLength(8),
-      ]]
-    }, { 
-    });
+    this.loginForm = this.formBuilder.group(
+      {
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(8)]],
+      },
+      {}
+    );
   }
 
   ngOnInit(): void {
-    // Check if already authenticated
-    this.authService.validateToken().subscribe(isValid => {
-      if (isValid) {
-        this.router.navigate(['/dashboard']);
-      }
-    });
+    if (this.authService.getToken() && this.authService.getRoles()) {
+      this.redirectByRole(this.authService.getRoles());
+    }
+  }
+
+  redirectByRole(roles: string | null): void {
+    if (roles == 'ADMIN') {
+      this.router.navigate(['/dashboard']);
+    } else if (roles == 'USER') {
+      this.router.navigate(['/user/dashboard']);
+    }
+    this.toastr.success('Login successful', 'Success');
   }
 
   onSubmit(): void {
@@ -56,25 +69,37 @@ export class LoginComponent {
 
     const loginData: LoginModel = {
       email: this.loginForm.value.email,
-      password: this.loginForm.value.password
+      password: this.loginForm.value.password,
     };
 
     this.authService.login(loginData).subscribe({
       next: (response) => {
-        this.authService.setToken(response?.accessToken);
+        this.authService.setToken(response.accessToken);
         if (response.refreshToken) {
           this.authService.setRefreshToken(response.refreshToken);
         }
 
-        this.toastr.success('Login successful', 'Success');
-        this.router.navigate(['']);
+        if (
+          this.authService.getRoles() == null ||
+          this.authService.getRoles() == undefined
+        ) {
+          this.authService.getCurrentUser().subscribe((user) => {
+            this.authService.setRoles(user?.roles);
+            this.redirectByRole(this.authService.getRoles());
+          });
+        } else {
+          this.redirectByRole(this.authService.getRoles());
+        }
+        // Fetch user details and redirect based on role
       },
       error: (data) => {
         this.toastr.error(data.error?.message || 'Login failed', 'Error');
-      }
+      },
     });
   }
 
   // Getter for easy access to form fields
-  get f() { return this.loginForm.controls; }
+  get f() {
+    return this.loginForm.controls;
+  }
 }

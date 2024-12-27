@@ -72,7 +72,8 @@ export class ViewRoomComponent {
         responseType: 'text' 
       }).subscribe({
         next: (response) => {
-          alert('Room has been deleted successfully.');
+          this.toastr.success('Room has been deleted successfully.');
+
           this.fetchRooms(); // Refresh the list
         },
         error: (error) => {
