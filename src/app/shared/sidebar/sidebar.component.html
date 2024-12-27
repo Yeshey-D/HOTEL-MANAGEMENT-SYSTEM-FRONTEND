@@ -1,7 +1,7 @@
 <div class="fixed left-0 top-0 h-full w-64 bg-gray-100 border-r p-6">
   <div class="mb-10 flex items-center space-x-4">
     <img 
-      src="assets/logo.png" 
+      src="/HMS.webp" 
       alt="" 
       class="h-12 w-12 rounded-full"
     />
@@ -16,17 +16,11 @@
       <li routerLink="/dashboard/view-room" class="bg-white p-3 mb-2 rounded flex items-center space-x-2 hover:bg-gray-200 cursor-pointer">
         <span>View</span>
       </li>
-      <li routerLink="/dashboard/add-room" class="bg-white p-3 mb-2 rounded flex items-center space-x-2 hover:bg-gray-200 cursor-pointer">
-        <span>Add</span>
-      </li>
-      <!-- <li routerLink="/dashboard/edit-room" class="bg-white p-3 mb-2 rounded flex items-center space-x-2 hover:bg-gray-200 cursor-pointer">
-        <span>Edit</span>
-      </li> -->
       <li class="bg-white p-3 mb-2 rounded flex items-center space-x-2 hover:bg-gray-200 cursor-pointer">
         <span>Reservations</span>
       </li>
       <li class="bg-white p-3 mb-2 rounded flex items-center space-x-2 hover:bg-gray-200 cursor-pointer"
-      (click)="handleLogout()">
+      (click)="onLogout()">
         <span>Log Out</span>
       </li>
     </ul>

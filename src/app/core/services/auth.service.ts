@@ -5,7 +5,8 @@ import { ApiService } from '../../api.service';
 import { User } from '../models/user.model';
 import { UserService } from './user.service';
 import { catchError, map } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,13 @@ import { Observable, of } from 'rxjs';
 export class AuthService {
   private TOKEN_KEY = 'access_token';
   private REFRESH_TOKEN_KEY = 'refresh_token';
+  private ROLE = 'role';
 
   constructor(
     private apiService: ApiService,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
+
   ) {}
 
   // Store tokens
@@ -37,6 +41,18 @@ export class AuthService {
     return localStorage.getItem(this.REFRESH_TOKEN_KEY);
   }
 
+  setRoles(role: string):void{
+    localStorage.setItem(this.ROLE,role);
+  }
+
+  getRoles():string|null{
+    return localStorage.getItem(this.ROLE);
+  }
+
+  removeRoles():void{
+    localStorage.removeItem(this.ROLE);
+  }
+
   // Remove tokens
   removeToken(): void {
     localStorage.removeItem(this.TOKEN_KEY);
@@ -48,20 +64,9 @@ export class AuthService {
 
   // Validate token by calling a protected endpoint
   validateToken(): Observable<boolean> {
-    const token = this.getToken();
-  
-    // Improved undefined and empty string checking
-    if (!token || token === 'undefined') {
-      return of(false);
-    }
-  
-    return this.apiService.get('/users/self', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    }).pipe(
+    return this.apiService.get('/users/self').pipe(
       map(() => true),
-      catchError(() => of(false))
+      catchError(() => of(false)) // Ensure it returns false on error
     );
   }
 
@@ -78,50 +83,71 @@ export class AuthService {
   }
 
   getCurrentUser(): Observable<User> {
-    return this.apiService.get<User>('/users/self').pipe(
-      map((response: any) => {
-        // Create a new User object from the API response
+    return this.apiService.get<{ status: boolean, data: { user: User } }>('/users/self').pipe(
+      map((response: any) => {        
         const user: User = {
-          id: response?.data?.user.id,
-          // Map other properties from the response
-          email: response?.data?.user.email,
-          name:"Admin"
-          // Add any additional mapping as needed
+          id: response?.data?.user?.id,
+          email: response?.data?.user?.email,
+          roles: response?.data?.user?.roles, // Ensure this matches the backend
+          name: response?.data?.user?.name,
         };
-
+      
         this.userService.setCurrentUser(user);
         return user;
+      }),
+      catchError((error) => {
+        if (error.status === 403) {
+          this.router.navigate(['/login']);
+        }
+        return throwError(() => error);
       })
     );
   }
 
-  // Logout method
+  // Update logout method to be more thorough
   logout(): void {
     this.removeToken();
     this.removeRefreshToken();
-    // localStorage.clear();
+    this.removeRoles();
+    // Clear any other auth-related data from localStorage
+    localStorage.clear();
   }
 
   // Refresh token method
   refreshToken(): Observable<LoginResponseModel> {
     const refreshToken = this.getRefreshToken();
     
+    if (!refreshToken) {
+      return throwError(() => new Error('No refresh token available'));
+    }
+  
     return this.apiService.post<LoginResponseModel>('/auth/refresh-token', null, {
       headers: {
         'Authorization': `Bearer ${refreshToken}`
       }
     }).pipe(
       map((response: any) => {
-        // Assuming the backend returns an object with access_token and refresh_token
-        this.setToken(response?.accessToken);
-        this.setRefreshToken(response?.refreshToken);
+        if (!response?.data?.accessToken || !response?.data?.refreshToken) {
+          throw new Error('Invalid token response');
+        }
+        
+        // Store new tokens
+        this.setToken(response.data.accessToken);
+        this.setRefreshToken(response.data.refreshToken);
         return response.data;
+      }),
+      catchError((error) => {
+        // Clear tokens on refresh failure
+        this.logout();
+        return throwError(() => error);
       })
     );
   }
+
   forgotPassword(email: string): Observable<any> {
     return this.apiService.post('/auth/forgot-password', { email });
   }
+
   resetPassword(token: string, password: string): Observable<any> {
     return this.apiService.post('/auth/reset-password', { token, password });
   }

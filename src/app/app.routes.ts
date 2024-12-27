@@ -9,11 +9,16 @@ import { EditRoomComponent } from './admin/edit-room/edit-room.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { UserDashboardComponent } from './user/user-dashboard/user-dashboard.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent }, // Default route
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'user/dashboard',
+    component: UserDashboardComponent,
+  },
+
   {
     path: 'dashboard',
     component: DashBoardComponent,
@@ -43,9 +48,10 @@ export const routes: Routes = [
         path: 'edit-room/:id',
         component: EditRoomComponent,
       },
-// ... existing routes ...
+      // ... existing routes ...
     ],
   },
+  
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'reset-password/:token', component: ResetPasswordComponent }
+  { path: 'reset-password/:token', component: ResetPasswordComponent },
 ];
